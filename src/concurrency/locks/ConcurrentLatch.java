@@ -2,6 +2,7 @@ package concurrency.locks;
 
 import concurrency.nonblockingds.Task;
 
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
@@ -14,6 +15,8 @@ public class ConcurrentLatch {
     private int SIZE;
 
     private Lock lock = new ReentrantLock();
+
+    private AtomicBoolean isStarted = new AtomicBoolean(false);
 
     private Condition workflowTermination = lock.newCondition();
 

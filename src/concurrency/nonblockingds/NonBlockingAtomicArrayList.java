@@ -25,6 +25,18 @@ public class NonBlockingAtomicArrayList<T> {
         array.set(pos, obj);
     }
 
+    public T get(int index) {
+        return array.get(index);
+    }
+
+    public int indexOf(T obj) {
+        int ind = 0;
+        while (!array.get(ind).equals(obj)) {
+            ind++;
+        }
+        return ind;
+    }
+
     private void doubleArraySize(int pos) {
         lock.lock();
         if (pos < CAPACITY) {

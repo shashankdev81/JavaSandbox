@@ -2,6 +2,9 @@ package concurrency.java;
 
 import concurrency.locks.NonBlockingMutexLock;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.Semaphore;
 
 public class MutexTest {
@@ -15,6 +18,7 @@ public class MutexTest {
         new Thread(new Process()).start();
         new Thread(new Process()).start();
         new Thread(new Process()).start();
+
 
     }
 

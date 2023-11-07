@@ -5,7 +5,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class ConcurrentReadWriteLock {
+public class ConcurrentReadWriteLock implements ReadWriteLock {
 
 
     private AtomicInteger writeLock = new AtomicInteger(0);
@@ -30,8 +30,10 @@ public class ConcurrentReadWriteLock {
 
 
     public void acquireReadLock() {
-        while (!writeLock.compareAndSet(0, 1) || writeLock.get() != 1) {
-            synchronized (readPathParking) {
+        synchronized (readPathParking) {
+
+            while (!writeLock.compareAndSet(0, 1) && writeLock.get() != 1) {
+                System.out.println("Waiting" + Thread.currentThread().getName());
                 try {
                     readPathParking.wait();
                 } catch (InterruptedException e) {
@@ -44,8 +46,8 @@ public class ConcurrentReadWriteLock {
     }
 
     public void acquireWriteLock() {
-        while (!writeLock.compareAndSet(0, 2)) {
-            synchronized (writePathParking) {
+        synchronized (writePathParking) {
+            while (!writeLock.compareAndSet(0, 2)) {
                 try {
                     writePathParking.wait();
                 } catch (InterruptedException e) {
@@ -65,10 +67,9 @@ public class ConcurrentReadWriteLock {
         readLock.release();
         if (readLock.permitsAcquired() == 0) {
             //two or more competing threads might be responsible for read lock counter to finally reach 0
-            writeLock.compareAndSet(1, 0);
-
             //notify waiting write threads
             synchronized (writePathParking) {
+                writeLock.compareAndSet(1, 0);
                 writePathParking.notifyAll();
             }
         }
@@ -79,9 +80,9 @@ public class ConcurrentReadWriteLock {
             throw new IllegalMonitorStateException("Not lock owner");
         }
         owners.get(Type.WRITE).remove(Thread.currentThread().getName());
-        writeLock.set(0);
         //notify waiting read threads
         synchronized (readPathParking) {
+            writeLock.set(0);
             readPathParking.notifyAll();
         }
         //notify waiting write threads

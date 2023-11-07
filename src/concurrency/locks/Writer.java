@@ -4,9 +4,11 @@ public class Writer implements Runnable {
 
     private int num = 0;
 
-    private ConcurrentReadWriteLock lock;
+    private ReadWriteLock lock;
 
-    public Writer(ConcurrentReadWriteLock lock, int n) {
+    static long time = (long) (Math.random() * 100);
+
+    public Writer(ReadWriteLock lock, int n) {
         this.num = n;
         this.lock = lock;
     }
@@ -14,12 +16,10 @@ public class Writer implements Runnable {
     @Override
     public void run() {
         while (true) {
-            long time = (long) (Math.random() * 1000);
             try {
-                Thread.sleep(time);
                 lock.acquireWriteLock();
                 System.out.println("Acquired write lock:" + num + ",for " + time);
-                Thread.sleep(time);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } finally {

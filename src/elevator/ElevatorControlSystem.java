@@ -76,20 +76,19 @@ public class ElevatorControlSystem {
 
         private void tryToBeUseful() throws InterruptedException {
             if (!downRequests.isEmpty()) {
-                addIntermediateStop(downRequests);
+                setDirection(downRequests);
 
             }
             if (!upRequests.isEmpty()) {
-                addIntermediateStop(upRequests);
+                setDirection(upRequests);
 
             }
 
         }
 
-        private void addIntermediateStop(BlockingDeque<MoveRequest> requests) {
+        private void setDirection(BlockingDeque<MoveRequest> requests) {
             MoveRequest request = requests.peek();
             if (request.getFromFloor() != floor) {
-                stops.add(request.getFromFloor());
                 flipState(request);
             } else {
                 state = request.getDirection();
@@ -119,9 +118,12 @@ public class ElevatorControlSystem {
             }
             downRequests.addAll(nonServiceableRequests);
             if (!stops.isEmpty()) {
-                moveDown();
-                if (stops.contains(floor) || floor == 0) {
-                    halt();
+                while (true) {
+                    moveDown();
+                    if (stops.contains(floor) || floor == 0) {
+                        halt();
+                        break;
+                    }
                 }
             }
         }
@@ -142,9 +144,12 @@ public class ElevatorControlSystem {
             }
             upRequests.addAll(nonServiceableRequests);
             if (!stops.isEmpty()) {
-                moveUp();
-                if (stops.contains(floor) || floor == MAX_FLOOR) {
-                    halt();
+                while (true) {
+                    moveUp();
+                    if (stops.contains(floor) || floor == MAX_FLOOR) {
+                        halt();
+                        break;
+                    }
                 }
             } else {
                 state = STATE.IDLE;
@@ -161,7 +166,7 @@ public class ElevatorControlSystem {
 
         private void moveDown() {
             floor--;
-            state = STATE.DOWN;
+            //state = STATE.DOWN;
             System.out.println("Elevator " + num + " going down 1 floor to:" + floor + ", stops=" + stops);
             try {
                 Thread.sleep(1000);
@@ -173,7 +178,7 @@ public class ElevatorControlSystem {
 
         private void moveUp() {
             floor++;
-            state = STATE.UP;
+            //state = STATE.UP;
             System.out.println("Elevator " + num + " going up 1 floor to:" + floor + ", stops=" + stops);
             try {
                 Thread.sleep(1000);

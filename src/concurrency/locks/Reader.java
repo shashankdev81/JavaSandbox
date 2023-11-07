@@ -4,9 +4,11 @@ public class Reader implements Runnable {
 
     private int num = 0;
 
-    private ConcurrentReadWriteLock lock;
+    private ReadWriteLock lock;
 
-    public Reader(ConcurrentReadWriteLock lock, int n) {
+    static long time = (long) (Math.random() * 100);
+
+    public Reader(ReadWriteLock lock, int n) {
         this.lock = lock;
         this.num = n;
     }
@@ -14,17 +16,14 @@ public class Reader implements Runnable {
     @Override
     public void run() {
         while (true) {
-            long time = (long) (Math.random() * 1000);
             try {
-                Thread.sleep(time);
                 lock.acquireReadLock();
                 System.out.println("Acquired read lock:" + num + ",for " + time);
-                Thread.sleep(time);
+                Thread.sleep(100);
+                lock.releaseReadLock();
+                System.out.println("Released read lock:" + num + ",for " + time);
             } catch (InterruptedException e) {
                 e.printStackTrace();
-            } finally {
-                lock.releaseReadLock();
-                System.out.println("Released read lock:" + num);
             }
         }
     }

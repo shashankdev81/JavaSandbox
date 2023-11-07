@@ -1,6 +1,7 @@
 package concurrency.nonblockingds;
 
 import java.util.concurrent.atomic.AtomicMarkableReference;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ConcurrentList<T> {
 

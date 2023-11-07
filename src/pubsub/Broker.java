@@ -79,7 +79,6 @@ public class Broker {
         @Override
         public void run() {
             System.out.println("Begin dispatcher");
-
             while (!isStop) {
                 Message message = null;
                 try {
