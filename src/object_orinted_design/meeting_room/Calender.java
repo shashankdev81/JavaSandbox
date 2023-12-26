@@ -2,6 +2,7 @@ package object_orinted_design.meeting_room;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import object_orinted_design.task_scheduler.SimpleScheduleableTask;
 
 //TODO: make this singleton
 public class Calender {
@@ -11,7 +12,8 @@ public class Calender {
     //TODO: replace with criteria
     public List<MeetingRoom> getAvailableRooms(Date date, Booking booking, int capacity) {
         List<MeetingRoom> roomOptions = new ArrayList<>();
-        String modifiedDate = new SimpleDateFormat("yyyy-MM-dd").format(date);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        String modifiedDate = format.format(date);
         if (roomBookingsByDateAndTime.get(modifiedDate) == null) {
             return roomOptions;
         }

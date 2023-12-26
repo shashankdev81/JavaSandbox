@@ -50,7 +50,8 @@ class TodoList {
     public List<String> getAllTasks(int userId) {
         List<String> results = new ArrayList<String>();
         if (userToTaskMap.get(userId) != null) {
-            results = userToTaskMap.get(userId).values().stream().sorted().filter(t -> !t.isComplete()).map(t -> t.desc).collect(Collectors.toList());
+            results = userToTaskMap.get(userId).values().stream().sorted()
+                .filter(t -> !t.isComplete()).map(t -> t.desc).collect(Collectors.toList());
         }
         return results;
     }
@@ -58,7 +59,8 @@ class TodoList {
     public List<String> getTasksForTag(int userId, String tag) {
         List<String> results = new ArrayList<>();
         if (userToTagsToTaskMap.get(userId) != null) {
-            results = userToTagsToTaskMap.get(userId).get(tag).stream().sorted().filter(t -> !t.isComplete()).map(t -> t.desc).collect(Collectors.toList());
+            results = userToTagsToTaskMap.get(userId).get(tag).stream().sorted()
+                .filter(t -> !t.isComplete()).map(t -> t.desc).collect(Collectors.toList());
         }
         return results;
     }
@@ -83,7 +85,8 @@ class TodoList {
         }
 
         public String toString() {
-            return "Task:id, desc, dueData, isComplete=" + id + "," + desc + "," + dueDate + "," + isComplete;
+            return "Task:id, desc, dueData, isComplete=" + id + "," + desc + "," + dueDate + ","
+                + isComplete;
         }
 
         public int compareTo(Task t) {

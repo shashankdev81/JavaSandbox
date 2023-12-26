@@ -23,7 +23,7 @@ public class WebCrawler {
         WebCrawler crawler = new WebCrawler();
         List<CompletableFuture<Void>> futures = crawler.crawl(WebCrawler.ROOT, 3);
         CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
-        System.out.println(crawledUrls);
+        System.out.println(crawledUrls.size());
     }
 
     public List<CompletableFuture<Void>> crawl(String url, int level) {
@@ -65,8 +65,8 @@ public class WebCrawler {
         public CompletableFuture<List<String>> getUrls(String startUrl) {
             CompletableFuture<List<String>> future = CompletableFuture.supplyAsync(() -> {
                 try {
-                    Thread.sleep((long) (10 * Math.random()));
-                    System.out.println("Crawl no:" + count.incrementAndGet() + ", Thread=" + Thread.currentThread().getName());
+                    Thread.sleep((long) (2 * Math.random()));
+                    //System.out.println("Crawl no:" + count.incrementAndGet() + ", Thread=" + Thread.currentThread().getName());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

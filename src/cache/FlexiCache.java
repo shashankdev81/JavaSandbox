@@ -140,19 +140,19 @@ public class FlexiCache<K, V> implements Cache<K, V> {
         }
     }
 
+    private class MRUEvictionStrategy implements IEvictionStrategy {
+        @Override
+        public void evict() {
+            removeHead();
+        }
+    }
+
     private void removeTail() {
         Node temp = tail;
         tail = tail.prev;
         tail.next = null;
         temp.prev = null;
         cache.remove(temp.key);
-    }
-
-    private class MRUEvictionStrategy implements IEvictionStrategy {
-        @Override
-        public void evict() {
-            removeHead();
-        }
     }
 
     private void removeHead() {
