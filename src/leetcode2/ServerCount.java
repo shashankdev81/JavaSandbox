@@ -33,6 +33,7 @@ public class ServerCount {
 
             }
         }
+
         int[] arr = new int[2];
         Map<Integer, Integer> countMap = new HashMap<>();
         for (int num : arr) {
